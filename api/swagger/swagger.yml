@@ -1,0 +1,136 @@
+swagger: '2.0'
+info:
+  version: ''
+  title: Dashboard
+  description: ''
+host: 'localhost:3000'
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /trips:
+    get:
+      operationId: GetTrips
+      summary: Trips
+      tags:
+        - trip
+        - Trips
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/trip'
+        '400':
+          $ref: '#/responses/trait:global:400'
+        '404':
+          $ref: '#/responses/trait:global:404'
+        '500':
+          $ref: '#/responses/trait:global:500'
+  '/trips/{id}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+    get:
+      operationId: GetTripByID
+      summary: Trip By ID
+      tags:
+        - trip
+        - Trips
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/trip'
+          examples:
+            application/json:
+              '': pariatur do dolore
+        '400':
+          $ref: '#/responses/trait:global:400'
+        '404':
+          $ref: '#/responses/trait:global:404'
+        '500':
+          $ref: '#/responses/trait:global:500'
+  /destinations:
+    get:
+      operationId: GetDestinations
+      summary: Destinations
+      tags:
+        - destinations
+        - Destinations
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/destination'
+        '400':
+          $ref: '#/responses/trait:global:400'
+        '404':
+          $ref: '#/responses/trait:global:404'
+        '500':
+          $ref: '#/responses/trait:global:500'
+  '/destinations/{id}':
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+    get:
+      operationId: GetDestinationByID
+      summary: Destination By ID
+      tags:
+        - destinations
+        - Destinations
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/destination'
+        '400':
+          $ref: '#/responses/trait:global:400'
+        '404':
+          $ref: '#/responses/trait:global:404'
+        '500':
+          $ref: '#/responses/trait:global:500'
+responses:
+  'trait:global:400':
+    description: ''
+    schema:
+      type: string
+  'trait:global:404':
+    description: ''
+    schema:
+      type: string
+  'trait:global:500':
+    description: ''
+    schema:
+      type: string
+definitions:
+  trip:
+    title: Trip
+    type: object
+    properties:
+      id:
+        type: integer
+  destination:
+    title: Destination
+    type: object
+    properties:
+      id:
+        type: integer
+      budget:
+        type: integer
+      country:
+        type: string
+      city:
+        type: string
+      currency:
+        type: string

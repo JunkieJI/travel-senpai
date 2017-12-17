@@ -12,6 +12,14 @@ import (
 	"github.com/spf13/viper"
 )
 
+// ServerConfig : config parameters.
+type ServerConfig struct {
+	Host       string
+	Port       int
+	ConfigFile string
+	ConfigPath string
+}
+
 // DSN stores all the database connection and driver information
 type DSN struct {
 	Driver             string
@@ -74,6 +82,16 @@ func Init() {
 // ConnectionString returns the correctly formatted connection string for connecting to the database
 func (d DSN) ConnectionString() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=%s", d.Username, d.Password, d.Host, d.Port, d.Name, d.ParseTime)
+}
+
+// GetServerConfig : returns any parameters required in a ServerConfig struct.
+func GetServerConfig() ServerConfig {
+	Host := viper.GetString("host")
+	Port := viper.GetInt("port")
+	ConfigFile := viper.ConfigFileUsed()
+	ConfigPath := viper.GetString("configPath")
+
+	return ServerConfig{Host, Port, ConfigFile, ConfigPath}
 }
 
 // GetDSN : returns the database dsn from viper config.

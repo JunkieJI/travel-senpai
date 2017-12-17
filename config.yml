@@ -1,3 +1,6 @@
+host: localhost
+port: 8080
+
 store:
   db:
     driver: mysql

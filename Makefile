@@ -1,6 +1,7 @@
 BINARY=travelsenpaid
 TESTDIRS=`go list ./... | grep -v /vendor/ `
 BASEDIR=$(shell pwd)
+GO_SWAGGER=./ops/tools/go-swagger/swagger_0.12.0_darwin_amd64
 
 default:
 	rm -rf build/
@@ -13,3 +14,8 @@ test:
 
 clean:
 	rm -rf build/
+
+swagger:
+	rm -rf ./api/swagger/models
+	rm -rf ./api/swagger/restapi/operations
+	$(GO_SWAGGER) generate server --spec=./api/swagger/swagger.yml -t ./api/swagger --name=travel_senpai --exclude-main
