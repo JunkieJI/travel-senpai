@@ -12,6 +12,8 @@ import (
 // Store interface
 type Store interface {
 	Ping() bool
+	GetDestinationByID(destinationID int64) (*Destination, error)
+	GetDestinations() (*[]Destination, error)
 }
 
 type store struct {

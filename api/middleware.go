@@ -17,7 +17,7 @@ func RegisterMiddleware(api *operations.TravelSenpaiAPI) http.Handler {
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation
 func setupMiddleware(handler http.Handler) http.Handler {
-	limiter := tollbooth.NewLimiter(1, nil)
+	limiter := tollbooth.NewLimiter(1000, nil)
 	limiter.SetIPLookups([]string{"RemoteAddr", "X-Forwarded-For", "X-Real-IP"})
 	return tollbooth.LimitFuncHandler(limiter, handler.ServeHTTP)
 }
