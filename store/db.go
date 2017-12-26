@@ -1,6 +1,8 @@
 package store
 
 import (
+	"context"
+
 	log "github.com/sirupsen/logrus"
 
 	"github.com/JunkieJI/travel-senpai/config"
@@ -12,8 +14,11 @@ import (
 // Store interface
 type Store interface {
 	Ping() bool
-	GetDestinationByID(destinationID int64) (*Destination, error)
-	GetDestinations() (*[]Destination, error)
+	GetDestinationByID(context context.Context, destinationID int64) (*Destination, error)
+	GetDestinations(context context.Context) (*[]Destination, error)
+	AddDestination(ctx context.Context, dest *Destination) (*Destination, error)
+	UpdateDestination(ctx context.Context, dest *Destination) (*Destination, error)
+	DeleteDestination(ctx context.Context, id int64) error
 }
 
 type store struct {

@@ -18,6 +18,9 @@ import (
 	spec "github.com/go-openapi/spec"
 	strfmt "github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	"github.com/JunkieJI/travel-senpai/api/swagger/restapi/operations/destinations"
+	"github.com/JunkieJI/travel-senpai/api/swagger/restapi/operations/transport"
 )
 
 // NewTravelSenpaiAPI creates a new TravelSenpai instance
@@ -35,17 +38,29 @@ func NewTravelSenpaiAPI(spec *loads.Document) *TravelSenpaiAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		GetDestinationByIDHandler: GetDestinationByIDHandlerFunc(func(params GetDestinationByIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetDestinationByID has not yet been implemented")
+		DestinationsCreateDestinationHandler: destinations.CreateDestinationHandlerFunc(func(params destinations.CreateDestinationParams) middleware.Responder {
+			return middleware.NotImplemented("operation DestinationsCreateDestination has not yet been implemented")
 		}),
-		GetDestinationsHandler: GetDestinationsHandlerFunc(func(params GetDestinationsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetDestinations has not yet been implemented")
+		DestinationsDeleteDestinationByIDHandler: destinations.DeleteDestinationByIDHandlerFunc(func(params destinations.DeleteDestinationByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation DestinationsDeleteDestinationByID has not yet been implemented")
+		}),
+		DestinationsGetDestinationByIDHandler: destinations.GetDestinationByIDHandlerFunc(func(params destinations.GetDestinationByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation DestinationsGetDestinationByID has not yet been implemented")
+		}),
+		DestinationsGetDestinationsHandler: destinations.GetDestinationsHandlerFunc(func(params destinations.GetDestinationsParams) middleware.Responder {
+			return middleware.NotImplemented("operation DestinationsGetDestinations has not yet been implemented")
+		}),
+		TransportGetTransportByIDHandler: transport.GetTransportByIDHandlerFunc(func(params transport.GetTransportByIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation TransportGetTransportByID has not yet been implemented")
 		}),
 		GetTripByIDHandler: GetTripByIDHandlerFunc(func(params GetTripByIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetTripByID has not yet been implemented")
 		}),
 		GetTripsHandler: GetTripsHandlerFunc(func(params GetTripsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetTrips has not yet been implemented")
+		}),
+		DestinationsUpdateDestinationHandler: destinations.UpdateDestinationHandlerFunc(func(params destinations.UpdateDestinationParams) middleware.Responder {
+			return middleware.NotImplemented("operation DestinationsUpdateDestination has not yet been implemented")
 		}),
 	}
 }
@@ -76,14 +91,22 @@ type TravelSenpaiAPI struct {
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
 
-	// GetDestinationByIDHandler sets the operation handler for the get destination by ID operation
-	GetDestinationByIDHandler GetDestinationByIDHandler
-	// GetDestinationsHandler sets the operation handler for the get destinations operation
-	GetDestinationsHandler GetDestinationsHandler
+	// DestinationsCreateDestinationHandler sets the operation handler for the create destination operation
+	DestinationsCreateDestinationHandler destinations.CreateDestinationHandler
+	// DestinationsDeleteDestinationByIDHandler sets the operation handler for the delete destination by ID operation
+	DestinationsDeleteDestinationByIDHandler destinations.DeleteDestinationByIDHandler
+	// DestinationsGetDestinationByIDHandler sets the operation handler for the get destination by ID operation
+	DestinationsGetDestinationByIDHandler destinations.GetDestinationByIDHandler
+	// DestinationsGetDestinationsHandler sets the operation handler for the get destinations operation
+	DestinationsGetDestinationsHandler destinations.GetDestinationsHandler
+	// TransportGetTransportByIDHandler sets the operation handler for the get transport by ID operation
+	TransportGetTransportByIDHandler transport.GetTransportByIDHandler
 	// GetTripByIDHandler sets the operation handler for the get trip by ID operation
 	GetTripByIDHandler GetTripByIDHandler
 	// GetTripsHandler sets the operation handler for the get trips operation
 	GetTripsHandler GetTripsHandler
+	// DestinationsUpdateDestinationHandler sets the operation handler for the update destination operation
+	DestinationsUpdateDestinationHandler destinations.UpdateDestinationHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -147,12 +170,24 @@ func (o *TravelSenpaiAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.GetDestinationByIDHandler == nil {
-		unregistered = append(unregistered, "GetDestinationByIDHandler")
+	if o.DestinationsCreateDestinationHandler == nil {
+		unregistered = append(unregistered, "destinations.CreateDestinationHandler")
 	}
 
-	if o.GetDestinationsHandler == nil {
-		unregistered = append(unregistered, "GetDestinationsHandler")
+	if o.DestinationsDeleteDestinationByIDHandler == nil {
+		unregistered = append(unregistered, "destinations.DeleteDestinationByIDHandler")
+	}
+
+	if o.DestinationsGetDestinationByIDHandler == nil {
+		unregistered = append(unregistered, "destinations.GetDestinationByIDHandler")
+	}
+
+	if o.DestinationsGetDestinationsHandler == nil {
+		unregistered = append(unregistered, "destinations.GetDestinationsHandler")
+	}
+
+	if o.TransportGetTransportByIDHandler == nil {
+		unregistered = append(unregistered, "transport.GetTransportByIDHandler")
 	}
 
 	if o.GetTripByIDHandler == nil {
@@ -161,6 +196,10 @@ func (o *TravelSenpaiAPI) Validate() error {
 
 	if o.GetTripsHandler == nil {
 		unregistered = append(unregistered, "GetTripsHandler")
+	}
+
+	if o.DestinationsUpdateDestinationHandler == nil {
+		unregistered = append(unregistered, "destinations.UpdateDestinationHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -253,15 +292,30 @@ func (o *TravelSenpaiAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/destinations/{id}"] = NewGetDestinationByID(o.context, o.GetDestinationByIDHandler)
+	o.handlers["POST"]["/destinations"] = destinations.NewCreateDestination(o.context, o.DestinationsCreateDestinationHandler)
+
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/destinations/{id}"] = destinations.NewDeleteDestinationByID(o.context, o.DestinationsDeleteDestinationByIDHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/destinations"] = NewGetDestinations(o.context, o.GetDestinationsHandler)
+	o.handlers["GET"]["/destinations/{id}"] = destinations.NewGetDestinationByID(o.context, o.DestinationsGetDestinationByIDHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/destinations"] = destinations.NewGetDestinations(o.context, o.DestinationsGetDestinationsHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/transport/{id}"] = transport.NewGetTransportByID(o.context, o.TransportGetTransportByIDHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -272,6 +326,11 @@ func (o *TravelSenpaiAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/trips"] = NewGetTrips(o.context, o.GetTripsHandler)
+
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/destinations/{id}"] = destinations.NewUpdateDestination(o.context, o.DestinationsUpdateDestinationHandler)
 
 }
 

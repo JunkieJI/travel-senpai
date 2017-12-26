@@ -32,7 +32,6 @@ func init() {
     "/destinations": {
       "get": {
         "tags": [
-          "destinations",
           "Destinations"
         ],
         "summary": "Destinations",
@@ -56,12 +55,48 @@ func init() {
             "$ref": "#/responses/trait:global:500"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Destinations"
+        ],
+        "summary": "Create Destination",
+        "operationId": "CreateDestination",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/destination"
+            }
+          },
+          {
+            "type": "string",
+            "name": "Accept-Languge",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/destination"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/trait:global:400"
+          },
+          "404": {
+            "$ref": "#/responses/trait:global:404"
+          },
+          "500": {
+            "$ref": "#/responses/trait:global:500"
+          }
+        }
       }
     },
     "/destinations/{id}": {
       "get": {
         "tags": [
-          "destinations",
           "Destinations"
         ],
         "summary": "Destination By ID",
@@ -83,9 +118,93 @@ func init() {
           }
         }
       },
+      "put": {
+        "tags": [
+          "Destinations"
+        ],
+        "summary": "Update Destination",
+        "operationId": "UpdateDestination",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/destination"
+            }
+          },
+          {
+            "type": "string",
+            "name": "Accept-Language",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/destination"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/trait:global:400"
+          },
+          "404": {
+            "$ref": "#/responses/trait:global:404"
+          },
+          "500": {
+            "$ref": "#/responses/trait:global:500"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Destinations"
+        ],
+        "summary": "Delete Destination By ID",
+        "operationId": "DeleteDestinationByID",
+        "responses": {
+          "204": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/trait:global:400"
+          },
+          "404": {
+            "$ref": "#/responses/trait:global:404"
+          },
+          "500": {
+            "$ref": "#/responses/trait:global:500"
+          }
+        }
+      },
       "parameters": [
         {
           "type": "integer",
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/transport/{id}": {
+      "get": {
+        "tags": [
+          "Transport"
+        ],
+        "summary": "Get Transport By ID",
+        "operationId": "GetTransportByID",
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/tranport"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "type": "string",
           "name": "id",
           "in": "path",
           "required": true
@@ -180,6 +299,39 @@ func init() {
         },
         "id": {
           "type": "integer"
+        }
+      }
+    },
+    "tranport": {
+      "type": "object",
+      "title": "Tranport",
+      "properties": {
+        "arrival_date": {
+          "type": "string"
+        },
+        "arrival_time": {
+          "type": "string"
+        },
+        "cost": {
+          "type": "integer"
+        },
+        "departure_date": {
+          "type": "string"
+        },
+        "departure_time": {
+          "type": "string"
+        },
+        "destination_id": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "layover": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
         }
       }
     },
