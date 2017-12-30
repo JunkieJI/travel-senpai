@@ -19,11 +19,6 @@ const DeleteDestinationByIDNoContentCode int = 204
 swagger:response deleteDestinationByIdNoContent
 */
 type DeleteDestinationByIDNoContent struct {
-
-	/*
-	  In: Body
-	*/
-	Payload string `json:"body,omitempty"`
 }
 
 // NewDeleteDestinationByIDNoContent creates DeleteDestinationByIDNoContent with default headers values
@@ -31,26 +26,10 @@ func NewDeleteDestinationByIDNoContent() *DeleteDestinationByIDNoContent {
 	return &DeleteDestinationByIDNoContent{}
 }
 
-// WithPayload adds the payload to the delete destination by Id no content response
-func (o *DeleteDestinationByIDNoContent) WithPayload(payload string) *DeleteDestinationByIDNoContent {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the delete destination by Id no content response
-func (o *DeleteDestinationByIDNoContent) SetPayload(payload string) {
-	o.Payload = payload
-}
-
 // WriteResponse to the client
 func (o *DeleteDestinationByIDNoContent) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(204)
-	payload := o.Payload
-	if err := producer.Produce(rw, payload); err != nil {
-		panic(err) // let the recovery middleware deal with this
-	}
-
 }
 
 // DeleteDestinationByIDBadRequestCode is the HTTP code returned for type DeleteDestinationByIDBadRequest

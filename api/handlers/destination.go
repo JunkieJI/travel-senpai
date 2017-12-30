@@ -42,9 +42,9 @@ func GetDestinations(params destinations.GetDestinationsParams) middleware.Respo
 	return destinations.NewGetDestinationsOK().WithPayload(payload)
 }
 
-// AddDestination : creates a destination
-func AddDestination(params destinations.CreateDestinationParams) middleware.Responder {
-	res, err := s.AddDestination(params.HTTPRequest.Context(), toStoreDestination(params.Body))
+// CreateDestination : creates a destination
+func CreateDestination(params destinations.CreateDestinationParams) middleware.Responder {
+	res, err := s.CreateDestination(params.HTTPRequest.Context(), toStoreDestination(params.Body))
 	if err != nil {
 		return destinations.NewCreateDestinationInternalServerError().WithPayload("Could not create destination")
 	}
@@ -57,7 +57,11 @@ func AddDestination(params destinations.CreateDestinationParams) middleware.Resp
 
 // UpdateDestination : updates a destination
 func UpdateDestination(params destinations.UpdateDestinationParams) middleware.Responder {
-	res, err := s.UpdateDestination(params.HTTPRequest.Context(), toStoreDestination(params.Body))
+	updateDestination := toStoreDestination(params.Body)
+	if updateDestination.ID == 0 {
+		updateDestination.ID = params.ID
+	}
+	res, err := s.UpdateDestination(params.HTTPRequest.Context(), updateDestination)
 	if err != nil {
 		return destinations.NewUpdateDestinationInternalServerError().WithPayload("Could not update destination")
 	}
@@ -74,7 +78,7 @@ func DeleteDestination(params destinations.DeleteDestinationByIDParams) middlewa
 	if err != nil {
 		return destinations.NewDeleteDestinationByIDInternalServerError().WithPayload("Unable to delete destination")
 	}
-	return destinations.NewDeleteDestinationByIDNoContent().WithPayload("Successfully deleted destination")
+	return destinations.NewDeleteDestinationByIDNoContent()
 }
 
 func toSwaggerDestination(destination *store.Destination) (*models.Destination, error) {

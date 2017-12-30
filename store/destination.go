@@ -1,6 +1,8 @@
 package store
 
-import "context"
+import (
+	"context"
+)
 
 func (s *store) GetDestinationByID(ctx context.Context, destinationID int64) (*Destination, error) {
 	var destination Destination
@@ -20,8 +22,8 @@ func (s *store) GetDestinations(ctx context.Context) (*[]Destination, error) {
 	return &destinations, nil
 }
 
-func (s *store) AddDestination(ctx context.Context, dest *Destination) (*Destination, error) {
-	res, err := s.db.Exec(AddDestination, dest.Budget, dest.City, dest.Country, dest.Currency)
+func (s *store) CreateDestination(ctx context.Context, dest *Destination) (*Destination, error) {
+	res, err := s.db.Exec(CreateDestination, dest.Budget, dest.Country, dest.City, dest.Currency)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +37,7 @@ func (s *store) AddDestination(ctx context.Context, dest *Destination) (*Destina
 }
 
 func (s *store) UpdateDestination(ctx context.Context, dest *Destination) (*Destination, error) {
-	_, err := s.db.Exec(UpdateDestination, dest.Budget, dest.City, dest.Country, dest.Currency, dest.ID)
+	_, err := s.db.Exec(UpdateDestination, dest.Budget, dest.Country, dest.City, dest.Currency, dest.ID)
 	if err != nil {
 		return nil, err
 	}

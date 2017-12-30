@@ -18,8 +18,8 @@ const GetDestinations = `SELECT
 	currency 
 	FROM destination`
 
-// AddDestination sql to add a destination
-const AddDestination = `INSERT INTO destination ('budget', 'country', 'city', 'currency') Values (?, ?, ?, ?)`
+// CreateDestination sql to add a destination
+const CreateDestination = `INSERT INTO destination (budget, country, city, currency) Values (?, ?, ?, ?)`
 
 // UpdateDestination sql to update a destination
 const UpdateDestination = `UPDATE destination set budget = ?, country = ?, city = ?, currency = ? WHERE id = ?`

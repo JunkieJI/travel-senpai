@@ -16,7 +16,7 @@ type Store interface {
 	Ping() bool
 	GetDestinationByID(context context.Context, destinationID int64) (*Destination, error)
 	GetDestinations(context context.Context) (*[]Destination, error)
-	AddDestination(ctx context.Context, dest *Destination) (*Destination, error)
+	CreateDestination(ctx context.Context, dest *Destination) (*Destination, error)
 	UpdateDestination(ctx context.Context, dest *Destination) (*Destination, error)
 	DeleteDestination(ctx context.Context, id int64) error
 }

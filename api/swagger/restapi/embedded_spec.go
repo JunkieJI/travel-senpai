@@ -161,12 +161,15 @@ func init() {
         ],
         "summary": "Delete Destination By ID",
         "operationId": "DeleteDestinationByID",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "Accept-Language",
+            "in": "header"
+          }
+        ],
         "responses": {
-          "204": {
-            "schema": {
-              "type": "string"
-            }
-          },
+          "204": {},
           "400": {
             "$ref": "#/responses/trait:global:400"
           },

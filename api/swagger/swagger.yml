@@ -167,11 +167,13 @@ paths:
       summary: Delete Destination By ID
       tags:
         - Destinations
+      parameters:
+        - name: Accept-Language
+          in: header
+          type: string
       responses:
         '204':
           description: ''
-          schema:
-            type: string
         '400':
           $ref: '#/responses/trait:global:400'
         '404':

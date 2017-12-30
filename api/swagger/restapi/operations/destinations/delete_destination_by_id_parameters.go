@@ -32,6 +32,10 @@ type DeleteDestinationByIDParams struct {
 	HTTPRequest *http.Request
 
 	/*
+	  In: header
+	*/
+	AcceptLanguage *string
+	/*
 	  Required: true
 	  In: path
 	*/
@@ -44,6 +48,10 @@ func (o *DeleteDestinationByIDParams) BindRequest(r *http.Request, route *middle
 	var res []error
 	o.HTTPRequest = r
 
+	if err := o.bindAcceptLanguage(r.Header[http.CanonicalHeaderKey("Accept-Language")], true, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	rID, rhkID, _ := route.Params.GetOK("id")
 	if err := o.bindID(rID, rhkID, route.Formats); err != nil {
 		res = append(res, err)
@@ -52,6 +60,20 @@ func (o *DeleteDestinationByIDParams) BindRequest(r *http.Request, route *middle
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (o *DeleteDestinationByIDParams) bindAcceptLanguage(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	o.AcceptLanguage = &raw
+
 	return nil
 }
 
